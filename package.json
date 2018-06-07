@@ -9,5 +9,11 @@
   },
   "author": "nnnp <nnnp.dawid@gmail.com>",
   "license": "NIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "coffeescript": "^2.3.1",
+    "express": "^4.16.3",
+    "mongodb": "^2.2.35",
+    "socket.io": "^2.1.1"
+  }
 }
