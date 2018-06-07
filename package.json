@@ -1,0 +1,13 @@
+{
+  "name": "mongoAdmin",
+  "version": "0.1.0",
+  "description": "Mongo My Admin for school project",
+  "main": "server.js",
+  "repository": "https://github.com/NPM8/mongoAdmin.git",
+  "scripts": {
+    "start": "coffee server.coffee"
+  },
+  "author": "nnnp <nnnp.dawid@gmail.com>",
+  "license": "NIT",
+  "private": true
+}
