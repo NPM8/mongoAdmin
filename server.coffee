@@ -6,7 +6,7 @@ http    = require('http').Server(app)
 mongodb = require('mongodb').MongoClient
 ObjectId = require('mongodb').ObjectID
 
-app.use('/', express.static('client_react/build'))
+app.use('/', express.static('./client-react/build/'))
 
 io = socket http
 
@@ -14,11 +14,12 @@ io.on 'connection', (socket) ->
   console.log "User connect"
   userUrl = null
 
-  socket.on "connect", (data) ->
+  socket.on "connectTo", (data) ->
+    console.log "ala", data
     userUrl = 'mongodb://' +data.url + '/'
 
     mongodb.connect userUrl, (err, db) ->
-      if err then socket.emit 'error',  {data: err }  
+      if err then console.log err  
       else db.admin().listDatabases (err, dat) ->
         if err then socket.emit 'error',  {data: err }  
         else 
@@ -122,4 +123,3 @@ io.on 'connection', (socket) ->
 
 http.listen 3000,  ->
   console.log('3000')
-  undefined

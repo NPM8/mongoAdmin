@@ -22,17 +22,16 @@ import io from 'socket.io-client'
 
 import logo from './logo.svg'
 import './App.css'
-
+import {dbs, colls, docs} from './Consumers'
 import Home from './Home'
 import About from './About'
+import Collection from './Collection'
 `
-dbs = React.createContext []
-colls = React.createContext []
 
 class App extends Component
   constructor: (props) ->
     super props
-
+    @socket = io()
     @handleUserURLInput = @handleUserURLInput.bind this
     @handleConnect = @handleConnect.bind this
     @state = 
@@ -42,24 +41,30 @@ class App extends Component
       userVUrl: ''
       userUrl: ''
       err: ''
+      docs: ''
     @state.socket.on 'dbs', (data) =>
-      @setState dbs: data.array
+      @setState dbs: data.array.databases
+      # console.log data
     @state.socket.on 'collections', (data) =>
       @setState colls: data.data
+    @state.socket.on 'docs', (data) =>
+      @setState docs: data.data
 
   handleUserURLInput: (evt) ->
     @setState userVUrl: evt.target.value
     
   handleConnect: (evt) ->
-    @setState (prevState) ->
+    @setState ((prevState) ->
       console.log prevState
-      userUrl: prevState.userVUrl
-    @state.socket.emit 'connect', url: @state.userVUrl
+      userUrl: prevState.userVUrl), ->
+        @state.socket.emit 'connectTo', url: @state.userVUrl
+    undefined
    
   
   render: ->
     <dbs.Provider value={@state.dbs}>
     <colls.Provider value={@state.colls}>
+    <docs.Provider value={@state.docs}>
     <Router>
       <div className="App">
         <header className="App-header">
@@ -72,12 +77,9 @@ class App extends Component
         {if (@state.err)? and (@state.err) != '' 
           <Alert color="danger"> Something wthent wrong: {@state.err}</Alert>}
         {if (@state.userUrl)? and (@state.userUrl) != ''
-          <Switch>
             <Container>
-              <Route exact path="/" render={ Home } socket={@state.socket}/>
-              <Route path="/col/:db/:col" render={ About } />
+              <Home socket={@state.socket} />
             </Container>
-          </Switch>
         else
           <div className="w-100 max-height d-flex flex-column justify-content-center ">
             <div className="w-100 d-md-flex justify-content-center">
@@ -95,6 +97,7 @@ class App extends Component
         
       </div>
     </Router>
+    </docs.Provider>
     </colls.Provider>
     </dbs.Provider>
 
