@@ -34,9 +34,11 @@ class App extends Component
     @socket = io()
     @handleUserURLInput = @handleUserURLInput.bind this
     @handleConnect = @handleConnect.bind this
-    @state = 
+    @state =
       socket: io()
-      dbs: []
+      dbs: [
+        name: 'ala ma kota'
+      ]
       colls: []
       userVUrl: ''
       userUrl: ''
@@ -52,15 +54,15 @@ class App extends Component
 
   handleUserURLInput: (evt) ->
     @setState userVUrl: evt.target.value
-    
+
   handleConnect: (evt) ->
     @setState ((prevState) ->
       console.log prevState
       userUrl: prevState.userVUrl), ->
         @state.socket.emit 'connectTo', url: @state.userVUrl
     undefined
-   
-  
+
+
   render: ->
     <dbs.Provider value={@state.dbs}>
     <colls.Provider value={@state.colls}>
@@ -74,7 +76,7 @@ class App extends Component
         <p className="App-intro">
           Mongo My Admin test enviroment
         </p>
-        {if (@state.err)? and (@state.err) != '' 
+        {if (@state.err)? and (@state.err) != ''
           <Alert color="danger"> Something wthent wrong: {@state.err}</Alert>}
         {if (@state.userUrl)? and (@state.userUrl) != ''
             <Container>
@@ -87,14 +89,14 @@ class App extends Component
                 <Input placeholder="username" value={@state.userVUrl} onInput={@handleUserURLInput}/>
                 <InputGroupAddon addonType="append">
                   <Button color="secondary" onClick={@handleConnect}>
-                    I'm a button
+                    Connect
                   </Button>
                 </InputGroupAddon>
               </InputGroup>
             </div>
           </div>
         }
-        
+
       </div>
     </Router>
     </docs.Provider>

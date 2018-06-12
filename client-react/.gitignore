@@ -23,3 +23,5 @@ yarn-error.log*
 # coffee-script
 /src/**/*.js
 !/src/registerServiceWorker.js
+
+.idea/*

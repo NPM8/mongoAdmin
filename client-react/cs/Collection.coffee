@@ -45,7 +45,7 @@ class Collection extends React.Component
                     {(docs) =>
                         <Col className="d-flex flex-column">
                             {for doc in docs
-                                <div>{doc.id}</div>
+                                <div className="w-100 m-1 p-2 border-dark">{doc.id}</div>
                             }
                         </Col>
                     }
